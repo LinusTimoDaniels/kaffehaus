@@ -16,9 +16,14 @@ exports.avgBewertungGemeinde = async (req, res) => {
             ORDER BY ka.name, g.name
         `);
         conn.release();
+        
+        if (rows.length === 0) {
+            return res.status(404).json({ error: 'Keine Daten vorhanden' });
+        }
+        
         res.json(rows);
     } catch (err) {
-        res.status(500).json({ error: err.message });
+        res.status(500).json({ error: 'Datenbankfehler', details: err.message });
     }
 };
 
@@ -38,8 +43,13 @@ exports.countKanton = async (req, res) => {
             ORDER BY anzahl_kaffeehaeuser DESC
         `);
         conn.release();
+        
+        if (rows.length === 0) {
+            return res.status(404).json({ error: 'Keine Daten vorhanden' });
+        }
+        
         res.json(rows);
     } catch (err) {
-        res.status(500).json({ error: err.message });
+        res.status(500).json({ error: 'Datenbankfehler', details: err.message });
     }
 };
